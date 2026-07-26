@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
@@ -12,6 +13,33 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
+
+// !!! BURAYA KENDİ E-POSTA ADRESİNİ YAZ (Yönetici e-postası) !!!
+const ADMIN_EMAIL = "behicalbur@gmail.com"; 
+
+const authCheckScreen = document.getElementById("authCheckScreen");
+const adminPanelContent = document.getElementById("adminPanelContent");
+
+// Oturum ve Yetki Kontrolü
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        alert("Yönetim paneline erişmek için önce giriş yapmalısınız!");
+        window.location.href = "giris.html";
+        return;
+    }
+
+    if (user.email !== ADMIN_EMAIL) {
+        alert("Bu sayfaya erişim yetkiniz yok!");
+        window.location.href = "arsiv.html";
+        return;
+    }
+
+    // Eğer giriş yapan kişi admin ise ekranı göster ve verileri yükle
+    authCheckScreen.style.display = "none";
+    adminPanelContent.classList.remove("hidden-admin");
+    loadAdminPosts();
+});
 
 const cloudName = "uxk86ov1"; 
 const uploadPreset = "nostalji-erdek";
@@ -22,7 +50,7 @@ const imageDescInput = document.getElementById("imageDesc");
 const statusMessage = document.getElementById("statusMessage");
 const adminPostList = document.getElementById("adminPostList");
 
-// 1. Admin panelinde mevcut gönderileri listeleme
+// Gönderileri listeleme ve silme
 async function loadAdminPosts() {
     try {
         const querySnapshot = await getDocs(collection(db, "fotograflar"));
@@ -51,23 +79,22 @@ async function loadAdminPosts() {
                 <button data-id="${postId}" class="delete-post-btn" style="background: #ff4d4d; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">Sil</button>
             `;
 
-            // Silme butonuna olay dinleyicisi ekle
             postRow.querySelector(".delete-post-btn").addEventListener("click", async () => {
-                if (confirm("Bu gönderiyi ve içeriğindeki tüm fotoğrafları silmek istediğine emin misin?")) {
+                if (confirm("Bu gönderiyi silmek istediğine emin misin?")) {
                     await deleteDoc(doc(db, "fotograflar", postId));
                     alert("Gönderi silindi!");
-                    loadAdminPosts(); // Listeyi tazele
+                    loadAdminPosts();
                 }
             });
 
             adminPostList.appendChild(postRow);
         });
     } catch (e) {
-        console.error("Gönderiler yüklenirken hata:", e);
+        console.error("Hata:", e);
     }
 }
 
-// Yükleme fonksiyonu (Önceki adımdan kalan kod)
+// Fotoğraf Yükleme İşlemi
 uploadBtn.addEventListener("click", async () => {
     const files = imageFilesInput.files;
     const desc = imageDescInput.value;
@@ -92,6 +119,7 @@ uploadBtn.addEventListener("click", async () => {
             });
             const data = await res.json();
             imageUrls.push(data.secure_url);
+            uploadBtn.innerText = `Yükleniyor (${i + 1}/${files.length})...`;
         }
 
         await addDoc(collection(db, "fotograflar"), {
@@ -102,19 +130,16 @@ uploadBtn.addEventListener("click", async () => {
             timestamp: serverTimestamp()
         });
 
-        statusMessage.innerText = "Başarıyla eklendi!";
+        statusMessage.innerText = "Başarıyla arşive eklendi!";
         imageFilesInput.value = "";
         imageDescInput.value = "";
-        loadAdminPosts(); // Listeyi güncelle
+        loadAdminPosts();
 
     } catch (error) {
-        alert("Hata oluştu.");
+        alert("Yükleme sırasında hata oluştu.");
     } finally {
         uploadBtn.innerText = "Yükle ve Arşive Gönder";
         uploadBtn.disabled = false;
         setTimeout(() => { statusMessage.innerText = ""; }, 3000);
     }
 });
-
-// Sayfa açıldığında listeyi getir
-loadAdminPosts();
