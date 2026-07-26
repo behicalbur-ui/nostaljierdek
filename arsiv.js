@@ -2,7 +2,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebas
 import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// !!! DİKKAT: BURAYA KENDİ FİREBASE BİLGİLERİNİ GİR !!!
+// Firebase Yapılandırması
 const firebaseConfig = {
   apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
   authDomain: "nostaljierdek-60f5b.firebaseapp.com",
@@ -105,7 +105,7 @@ async function loadGallery() {
     }
 }
 
-// Modalı açma fonksiyonu
+// Modalı açma fonksiyonu (Dikey fotoğraflar için açıklama okunurluğu güncellendi)
 function openModal(id, imageUrls, description, likes, comments) {
     activePhotoId = id;
     currentImageUrls = imageUrls;
@@ -114,7 +114,8 @@ function openModal(id, imageUrls, description, likes, comments) {
     modal.style.display = "flex";
     updateModalImage();
     
-    modalDesc.innerText = description;
+    // Açıklamayı dikey/yatay fotoğraflarda okunabilir kılan yapı
+    modalDesc.innerHTML = `<p>${description}</p>`;
     modalLikes.innerText = likes;
     renderComments(comments);
     document.body.style.overflow = "hidden";
