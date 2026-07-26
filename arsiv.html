@@ -14,17 +14,9 @@
         <a href="index.html" class="back-link">← Anasayfaya Dön</a>
     </header>
 
-    <!-- Instagram Tarzı Fotoğraf Izgarası -->
-    <main class="gallery-grid">
-        <!-- Örnek Fotoğraf Kutusu -->
-        <div class="gallery-item" onclick="openModal('https://images.unsplash.com/photo-1552084117-56a987666449?auto=format&fit=crop&w=800', '1960\'larda Erdek sahilinde yaz akşamı. Eski iskele civarından bir görünüm.', 42)">
-            <img src="https://images.unsplash.com/photo-1552084117-56a987666449?auto=format&fit=crop&w=400" alt="Erdek 1960">
-            <div class="item-overlay">
-                <span>❤️ 42</span>
-                <span>💬 5</span>
-            </div>
-        </div>
-        <!-- Diğer fotoğraflar buraya gelecek -->
+    <!-- Instagram Tarzı Fotoğraf Izgarası (Dinamiğe bağlandı) -->
+    <main class="gallery-grid" id="galleryGrid">
+        <p style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #666;">Arşiv yükleniyor...</p>
     </main>
 
     <!-- Tıklanınca Açılan Pencere (Modal) -->
@@ -39,24 +31,23 @@
                     <!-- Açıklama buraya gelecek -->
                 </div>
                 <div class="modal-actions">
-                    <button class="like-btn">❤️ <span id="modalLikes">0</span> Beğen</button>
+                    <button class="like-btn" id="modalLikeBtn">❤️ <span id="modalLikes">0</span> Beğen</button>
                 </div>
                 <div class="modal-comments">
                     <h4>Yorumlar</h4>
-                    <div class="comment-list">
-                        <p><strong>Ahmet:</strong> Harika bir kare, dedemi hatırladım.</p>
+                    <div class="comment-list" id="commentList">
                         <!-- Yorumlar buraya eklenecek -->
                     </div>
                     <div class="comment-input">
-                        <input type="text" placeholder="Bir yorum ekle...">
-                        <button>Paylaş</button>
+                        <input type="text" id="commentInputText" placeholder="Bir yorum ekle...">
+                        <button id="sendCommentBtn">Paylaş</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Açılır pencerenin çalışması için gerekli JavaScript -->
-    <script src="app.js"></script>
+    <!-- Dinamik arşiv ve modal işlemlerini yönetecek JavaScript (Modül) -->
+    <script type="module" src="arsiv.js"></script>
 </body>
 </html>
