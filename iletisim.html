@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İletişim - Erdek Nostalji</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="arsiv-body">
+    <header class="arsiv-header">
+        <a href="index.html">
+            <img src="logo.png" alt="Erdek Nostalji Logo">
+        </a>
+        <nav class="nav-links">
+            <a href="arsiv.html">Arşiv</a>
+            <a href="hakkimizda.html">Hakkımızda</a>
+            <a href="iletisim.html" class="active">İletişim</a>
+            <a href="giris.html" id="authLink">Giriş Yap</a>
+        </nav>
+    </header>
+
+    <main class="content-container">
+        <div class="card-box">
+            <h2>İletişim ve Fotoğraf Katkısı</h2>
+            <p>Elinizde Erdek'e ait eski fotoğraflar mı var? Ya da arşivdeki fotoğraflara katkı sunmak, anılarınızı paylaşmak ister misiniz?</p>
+            <form onsubmit="event.preventDefault(); alert('Mesajınız başarıyla gönderildi. Teşekkür ederiz!');" style="margin-top: 20px;">
+                <input type="text" placeholder="Adınız Soyadınız" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:6px;" required>
+                <input type="email" placeholder="E-posta Adresiniz" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:6px;" required>
+                <textarea placeholder="Mesajınız veya fotoğraf katkı talebiniz..." rows="5" style="width:100%; padding:12px; margin-bottom:15px; border:1px solid #ddd; border-radius:6px;" required></textarea>
+                <button type="submit" style="background:#003366; color:white; border:none; padding:12px 25px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">Gönder</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
