@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-// Kendi Firebase bilgilerini buraya girdiğinden emin ol
 const firebaseConfig = {
   apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
   authDomain: "nostaljierdek-60f5b.firebaseapp.com",
@@ -14,27 +13,43 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Sayfa yüklendiğinde çalışır ve sağ üstteki butonu ayarlar
 document.addEventListener("DOMContentLoaded", () => {
     const authLink = document.getElementById("authLink");
-    
-    onAuthStateChanged(auth, (user) => {
-        if (!authLink) return;
+    if (!authLink) return;
 
+    // Önce tarayıcı belleğine hızlıca bak (Sayfa geçişlerinde anında gösterir)
+    const cachedEmail = sessionStorage.getItem("userEmail");
+    if (cachedEmail) {
+        const name = cachedEmail.split('@')[0];
+        authLink.innerText = `${name} (Çıkış Yap)`;
+        authLink.href = "#";
+        authLink.onclick = (e) => {
+            e.preventDefault();
+            signOut(auth).then(() => {
+                sessionStorage.removeItem("userEmail");
+                alert("Çıkış yapıldı");
+                location.href = "index.html";
+            });
+        };
+    }
+
+    // Firebase'in kendi ana kontrolü ile doğrula
+    onAuthStateChanged(auth, (user) => {
         if (user) {
-            // Kullanıcı giriş yapmışsa ismi yaz ve çıkış yapma özelliği ver
-            const userName = user.email ? user.email.split('@')[0] : "Kullanıcı";
-            authLink.innerText = `${userName} (Çıkış Yap)`;
+            sessionStorage.setItem("userEmail", user.email);
+            const name = user.email.split('@')[0];
+            authLink.innerText = `${name} (Çıkış Yap)`;
             authLink.href = "#";
             authLink.onclick = (e) => {
                 e.preventDefault();
-                signOut(auth).then(() => { 
-                    alert("Çıkış yapıldı"); 
-                    location.href = "index.html"; 
+                signOut(auth).then(() => {
+                    sessionStorage.removeItem("userEmail");
+                    alert("Çıkış yapıldı");
+                    location.href = "index.html";
                 });
             };
         } else {
-            // Giriş yapılmamışsa
+            sessionStorage.removeItem("userEmail");
             authLink.innerText = "Giriş Yap / Üye Ol";
             authLink.href = "giris.html";
             authLink.onclick = null;
