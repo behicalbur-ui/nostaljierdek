@@ -280,3 +280,42 @@ p {
         max-height: 50vh;
     }
 }
+/* Instagram Çoklu Fotoğraf İkonu (Kapak görseli üzerine) */
+.album-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+/* Modal İçinde Sağa/Sola Kaydırma Okları */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 5;
+    transition: background 0.3s;
+}
+
+.slider-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+
+.modal-image {
+    position: relative; /* Okların doğru konumlanması için */
+}
