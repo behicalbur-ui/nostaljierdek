@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// !!! DİKKAT: BURAYA KİMLİK BİLGİLERİNİ YİNE GİR !!!
 const firebaseConfig = {
   apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
   authDomain: "nostaljierdek-60f5b.firebaseapp.com",
@@ -23,14 +22,17 @@ const modalLikeBtn = document.getElementById("modalLikeBtn");
 const commentList = document.getElementById("commentList");
 const commentInputText = document.getElementById("commentInputText");
 const sendCommentBtn = document.getElementById("sendCommentBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
 
-let activePhotoId = null; // Şu an açık olan fotoğrafın ID'si
+let activePhotoId = null;
+let currentImageUrls = []; // Aktif gönderideki tüm fotoğrafların listesi
+let currentImageIndex = 0; // Şu an ekranda görünen fotoğrafın sırası
 
-// Sayfa açıldığında fotoğrafları Firebase'den çek
 async function loadGallery() {
     try {
         const querySnapshot = await getDocs(collection(db, "fotograflar"));
-        galleryGrid.innerHTML = ""; // "Yükleniyor..." yazısını temizle
+        galleryGrid.innerHTML = "";
 
         if (querySnapshot.empty) {
             galleryGrid.innerHTML = `<p style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #666;">Henüz arşive fotoğraf eklenmemiş.</p>`;
@@ -40,25 +42,33 @@ async function loadGallery() {
         querySnapshot.forEach((documentSnapshot) => {
             const data = documentSnapshot.data();
             const photoId = documentSnapshot.id;
-            const imageUrl = data.imageUrl || "";
+            
+            // Eski tekil resimlerle uyumlu olması için kontrol (Geriye dönük uyumluluk)
+            const imageUrls = data.imageUrls || (data.imageUrl ? [data.imageUrl] : []);
+            if (imageUrls.length === 0) return;
+
+            const coverImage = imageUrls[0]; // Kapak için ilk fotoğraf
             const desc = data.description || "Açıklama girilmemiş.";
             const likesCount = data.likes || 0;
             const commentsCount = data.comments ? data.comments.length : 0;
 
-            // Her fotoğraf için bir HTML kutusu oluştur
             const itemDiv = document.createElement("div");
             itemDiv.className = "gallery-item";
+            
+            // Eğer birden fazla fotoğraf varsa köşeye albüm simgesi koy
+            let badgeHtml = imageUrls.length > 1 ? `<div class="album-badge">📑 ${imageUrls.length}</div>` : "";
+
             itemDiv.innerHTML = `
-                <img src="${imageUrl}" alt="Erdek Tarihi">
+                <img src="${coverImage}" alt="Erdek Tarihi">
+                ${badgeHtml}
                 <div class="item-overlay">
                     <span>❤️ ${likesCount}</span>
                     <span>💬 ${commentsCount}</span>
                 </div>
             `;
 
-            // Fotoğrafa tıklandığında modalı aç
             itemDiv.addEventListener("click", () => {
-                openModal(photoId, imageUrl, desc, likesCount, data.comments || []);
+                openModal(photoId, imageUrls, desc, likesCount, data.comments || []);
             });
 
             galleryGrid.appendChild(itemDiv);
@@ -70,20 +80,47 @@ async function loadGallery() {
     }
 }
 
-// Modalı açma fonksiyonu
-function openModal(id, imageUrl, description, likes, comments) {
+function openModal(id, imageUrls, description, likes, comments) {
     activePhotoId = id;
+    currentImageUrls = imageUrls;
+    currentImageIndex = 0; // Her açıldığında ilk fotoğraftan başla
+    
     modal.style.display = "flex";
-    modalImg.src = imageUrl;
+    updateModalImage();
+    
     modalDesc.innerText = description;
     modalLikes.innerText = likes;
-    
-    // Yorumları listele
     renderComments(comments);
     document.body.style.overflow = "hidden";
 }
 
-// Yorumları ekrana basma
+// Görsel değiştirme (Sağa sola oklar)
+window.changeSlide = function(direction) {
+    currentImageIndex += direction;
+    
+    // Sınır kontrolü (Döngüsel veya sabit)
+    if (currentImageIndex < 0) {
+        currentImageIndex = currentImageUrls.length - 1; // En son fotoğrafa git
+    } else if (currentImageIndex >= currentImageUrls.length) {
+        currentImageIndex = 0; // Başa dön
+    }
+    
+    updateModalImage();
+}
+
+function updateModalImage() {
+    modalImg.src = currentImageUrls[currentImageIndex];
+    
+    // Eğer sadece 1 fotoğraf varsa okları gizle, birden fazla varsa göster
+    if (currentImageUrls.length > 1) {
+        prevBtn.style.display = "block";
+        nextBtn.style.display = "block";
+    } else {
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
+    }
+}
+
 function renderComments(comments) {
     commentList.innerHTML = "";
     if (comments.length === 0) {
@@ -97,53 +134,38 @@ function renderComments(comments) {
     });
 }
 
-// Beğeni Butonu İşlevi
 modalLikeBtn.onclick = async () => {
     if (!activePhotoId) return;
     try {
         const photoRef = doc(db, "fotograflar", activePhotoId);
-        await updateDoc(photoRef, {
-            likes: increment(1)
-        });
-        
-        // Ekranda sayıyı artır
-        const currentLikes = parseInt(modalLikes.innerText) || 0;
-        modalLikes.innerText = currentLikes + 1;
-    } catch (e) {
-        console.error("Beğeni hatası:", e);
-    }
+        await updateDoc(photoRef, { likes: increment(1) });
+        modalLikes.innerText = parseInt(modalLikes.innerText) + 1;
+    } catch (e) { console.error("Beğeni hatası:", e); }
 };
 
-// Yorum Gönderme İşlevi
 sendCommentBtn.onclick = async () => {
     const commentText = commentInputText.value.trim();
     if (!commentText || !activePhotoId) return;
 
     try {
         const photoRef = doc(db, "fotograflar", activePhotoId);
-        await updateDoc(photoRef, {
-            comments: arrayUnion(commentText)
-        });
+        await updateDoc(photoRef, { comments: arrayUnion(commentText) });
 
-        // Arayüze hemen ekle
         const p = document.createElement("p");
         p.innerHTML = `<strong>Ziyaretçi:</strong> ${commentText}`;
         if (commentList.querySelector("p style")) {
-            commentList.innerHTML = ""; // "İlk yorumu sen yaz" yazısını sil
+            commentList.innerHTML = "";
         }
         commentList.appendChild(p);
         commentInputText.value = "";
-    } catch (e) {
-        console.error("Yorum ekleme hatası:", e);
-    }
+    } catch (e) { console.error("Yorum hatası:", e); }
 };
 
-// Modalı Kapatma
 window.closeModal = function() {
     modal.style.display = "none";
     document.body.style.overflow = "auto";
     activePhotoId = null;
-    loadGallery(); // Kapatıldığında beğenileri/yorumları güncellemek için arşivi tazele
+    loadGallery();
 }
 
 window.onclick = function(event) {
@@ -152,5 +174,4 @@ window.onclick = function(event) {
     }
 }
 
-// Sayfa yüklendiğinde galeriyi çalıştır
 loadGallery();
