@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetim Paneli - Nostalji Erdek</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .admin-container { max-width: 600px; margin: 50px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .admin-container h2 { margin-bottom: 20px; color: #333; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
+        .form-group input[type="file"], .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; }
+        .upload-btn { background: #0095f6; color: white; border: none; padding: 12px 20px; font-size: 1.1rem; cursor: pointer; border-radius: 4px; width: 100%; font-weight: bold; transition: background 0.3s; }
+        .upload-btn:hover { background: #0077c5; }
+        #statusMessage { margin-top: 15px; text-align: center; font-weight: bold; color: green; }
+    </style>
+</head>
+<body class="arsiv-body">
+    <div class="admin-container">
+        <h2>Arşive Yeni Fotoğraf Ekle</h2>
+        <div class="form-group">
+            <label>Fotoğraf Seç:</label>
+            <input type="file" id="imageFile" accept="image/*">
+        </div>
+        <div class="form-group">
+            <label>Açıklama / Tarihi Bilgi:</label>
+            <textarea id="imageDesc" rows="5" placeholder="Bu karenin hikayesini yazın..."></textarea>
+        </div>
+        <button id="uploadBtn" class="upload-btn">Yükle ve Arşive Gönder</button>
+        <div id="statusMessage"></div>
+    </div>
+
+    <!-- Modül olarak admin.js dosyasını bağlıyoruz -->
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

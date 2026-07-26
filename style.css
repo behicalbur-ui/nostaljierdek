@@ -1,0 +1,282 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Tam ekran arka plan alanı */
+.hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    /* Buradaki URL'yi kendi görselinle değiştireceksin */
+    background-image: url('https://images.unsplash.com/photo-1505322022379-7c3353ee6291?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Beyaz yazıların okunabilmesi için resmi hafif karartan katman */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    color: #fdfdfd;
+    padding: 0 20px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+/* Arşivi Keşfet Butonu */
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    background: #fff;
+    color: #333;
+}
+
+/* Telefon ekranlarında yazıların düzgün görünmesi için */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    p {
+        font-size: 1rem;
+    }
+}
+
+/* --- ARŞİV SAYFASI TASARIMI --- */
+.arsiv-body {
+    background-color: #fafafa;
+}
+
+.arsiv-header {
+    text-align: center;
+    padding: 40px 20px;
+    background: #fff;
+    border-bottom: 1px solid #dbdbdb;
+    margin-bottom: 20px;
+}
+
+.arsiv-header h1 {
+    font-size: 2.5rem;
+    color: #333;
+    text-shadow: none;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #0095f6;
+    text-decoration: none;
+}
+
+/* Instagram Izgara (Grid) Yapısı */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.gallery-item {
+    position: relative;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .item-overlay {
+    opacity: 1;
+}
+
+/* --- AÇILIR PENCERE (MODAL) TASARIMI --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fff;
+    display: flex;
+    flex-direction: row;
+    max-width: 900px;
+    width: 90%;
+    max-height: 90vh;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-image {
+    flex: 6;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-image img {
+    width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+.modal-details {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-left: 1px solid #dbdbdb;
+}
+
+.modal-description {
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    border-bottom: 1px solid #efefef;
+    padding-bottom: 15px;
+}
+
+.modal-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.modal-comments {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.comment-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.comment-input {
+    display: flex;
+    border-top: 1px solid #dbdbdb;
+    padding-top: 10px;
+}
+
+.comment-input input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+}
+
+.comment-input button {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .modal-content {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .modal-image img {
+        max-height: 50vh;
+    }
+}

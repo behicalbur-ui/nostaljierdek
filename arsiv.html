@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arşiv - Nostalji Erdek</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+</head>
+<body class="arsiv-body">
+    
+    <header class="arsiv-header">
+        <h1>Erdek Tarihine Yolculuk</h1>
+        <a href="index.html" class="back-link">← Anasayfaya Dön</a>
+    </header>
+
+    <!-- Instagram Tarzı Fotoğraf Izgarası -->
+    <main class="gallery-grid">
+        <!-- Örnek Fotoğraf Kutusu -->
+        <div class="gallery-item" onclick="openModal('https://images.unsplash.com/photo-1552084117-56a987666449?auto=format&fit=crop&w=800', '1960\'larda Erdek sahilinde yaz akşamı. Eski iskele civarından bir görünüm.', 42)">
+            <img src="https://images.unsplash.com/photo-1552084117-56a987666449?auto=format&fit=crop&w=400" alt="Erdek 1960">
+            <div class="item-overlay">
+                <span>❤️ 42</span>
+                <span>💬 5</span>
+            </div>
+        </div>
+        <!-- Diğer fotoğraflar buraya gelecek -->
+    </main>
+
+    <!-- Tıklanınca Açılan Pencere (Modal) -->
+    <div id="photoModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <div class="modal-image">
+                <img id="modalImg" src="" alt="Büyük Fotoğraf">
+            </div>
+            <div class="modal-details">
+                <div class="modal-description" id="modalDesc">
+                    <!-- Açıklama buraya gelecek -->
+                </div>
+                <div class="modal-actions">
+                    <button class="like-btn">❤️ <span id="modalLikes">0</span> Beğen</button>
+                </div>
+                <div class="modal-comments">
+                    <h4>Yorumlar</h4>
+                    <div class="comment-list">
+                        <p><strong>Ahmet:</strong> Harika bir kare, dedemi hatırladım.</p>
+                        <!-- Yorumlar buraya eklenecek -->
+                    </div>
+                    <div class="comment-input">
+                        <input type="text" placeholder="Bir yorum ekle...">
+                        <button>Paylaş</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Açılır pencerenin çalışması için gerekli JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
