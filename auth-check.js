@@ -3,12 +3,12 @@ import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/fi
 
 // !!! Kendi Firebase bilgilerini buraya yaz !!!
 const firebaseConfig = {
-  apiKey: "SENIN_API_KEY_BURAYA",
-  authDomain: "nostalji-erdek.firebaseapp.com",
-  projectId: "nostalji-erdek",
-  storageBucket: "nostalji-erdek.appspot.com",
-  messagingSenderId: "123456789",
-  appId: "1:123456:web:abcd123"
+  apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
+  authDomain: "nostaljierdek-60f5b.firebaseapp.com",
+  projectId: "nostaljierdek-60f5b",
+  storageBucket: "nostaljierdek-60f5b.firebasestorage.app",
+  messagingSenderId: "671939663155",
+  appId: "1:671939663155:web:a01245b5a353b1f35e5a46"
 };
 
 const app = initializeApp(firebaseConfig);
