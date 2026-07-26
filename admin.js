@@ -1,8 +1,6 @@
-// Sadece Firestore'u çağırıyoruz (Storage'ı sildik)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-// !!! DİKKAT: BURAYA KENDİ FİREBASE BİLGİLERİNİ GİR !!!
 const firebaseConfig = {
   apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
   authDomain: "nostaljierdek-60f5b.firebaseapp.com",
@@ -15,57 +13,59 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// !!! DİKKAT: CLOUDINARY BİLGİLERİNİ BURAYA GİR !!!
 const cloudName = "uxk86ov1"; 
-const uploadPreset = "nostalji-erdek"; // Unsigned olarak ayarladığın preset adı
+const uploadPreset = "nostalji-erdek";
 
-// HTML Elemanları
 const uploadBtn = document.getElementById("uploadBtn");
-const imageFileInput = document.getElementById("imageFile");
+const imageFilesInput = document.getElementById("imageFiles"); // ID'yi güncelledik
 const imageDescInput = document.getElementById("imageDesc");
 const statusMessage = document.getElementById("statusMessage");
 
 uploadBtn.addEventListener("click", async () => {
-    const file = imageFileInput.files[0];
+    const files = imageFilesInput.files;
     const desc = imageDescInput.value;
 
-    if (!file) {
-        alert("Lütfen önce bir fotoğraf seçin!");
+    if (files.length === 0) {
+        alert("Lütfen en az bir fotoğraf seçin!");
         return;
     }
 
     try {
-        uploadBtn.innerText = "Cloudinary'ye Yükleniyor...";
+        uploadBtn.innerText = `Fotoğraflar yükleniyor (0/${files.length})...`;
         uploadBtn.disabled = true;
 
-        // 1. Fotoğrafı Cloudinary'ye Yükle
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("upload_preset", uploadPreset);
+        const imageUrls = [];
 
-        // Cloudinary API'sine resmi gönderiyoruz
-        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
-            method: "POST",
-            body: formData
-        });
-        
-        const cloudinaryData = await cloudinaryResponse.json();
-        
-        // 2. Güvenli Görsel Linkini Al (Otomatik optimize edilmiş URL)
-        const imageUrl = cloudinaryData.secure_url;
+        // Seçilen her bir fotoğrafı döngüye sokup Cloudinary'ye yüklüyoruz
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", uploadPreset);
+
+            const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                method: "POST",
+                body: formData
+            });
+            
+            const cloudinaryData = await cloudinaryResponse.json();
+            imageUrls.push(cloudinaryData.secure_url); // Linki listeye ekle
+            
+            uploadBtn.innerText = `Yükleniyor (${i + 1}/${files.length})...`;
+        }
 
         uploadBtn.innerText = "Veritabanına Kaydediliyor...";
 
-        // 3. Linki ve açıklamayı Firestore veritabanına kaydet
+        // Tüm fotoğrafların linklerini içeren diziyi (imageUrls) tek bir gönderi olarak Firestore'a kaydet
         await addDoc(collection(db, "fotograflar"), {
-            imageUrl: imageUrl,
+            imageUrls: imageUrls, // Artık tek bir string yerine resimler dizisi kaydediyoruz
             description: desc,
             likes: 0,
             timestamp: serverTimestamp()
         });
 
-        statusMessage.innerText = "Fotoğraf başarıyla Cloudinary'ye ve Arşive eklendi!";
-        imageFileInput.value = "";
+        statusMessage.innerText = "Albüm başarıyla arşive eklendi!";
+        imageFilesInput.value = "";
         imageDescInput.value = "";
 
     } catch (error) {
