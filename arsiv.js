@@ -1,15 +1,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, arrayUnion, arrayRemove, increment } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // Firebase Yapılandırması
 const firebaseConfig = {
-  apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
-  authDomain: "nostaljierdek-60f5b.firebaseapp.com",
-  projectId: "nostaljierdek-60f5b",
-  storageBucket: "nostaljierdek-60f5b.firebasestorage.app",
-  messagingSenderId: "671939663155",
-  appId: "1:671939663155:web:a01245b5a353b1f35e5a46"
+    apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
+    authDomain: "nostaljierdek-60f5b.firebaseapp.com",
+    projectId: "nostaljierdek-60f5b",
+    storageBucket: "nostaljierdek-60f5b.firebasestorage.app",
+    messagingSenderId: "671939663155",
+    appId: "1:671939663155:web:a01245b5a353b1f35e5a46"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -34,6 +34,7 @@ let activePhotoId = null;
 let currentImageUrls = []; 
 let currentImageIndex = 0; 
 let currentUser = null;
+let activePhotoData = null; // Aktif fotoğrafın tüm verilerini tutmak için
 
 // Kullanıcı oturum durumunu takip et
 onAuthStateChanged(auth, (user) => {
@@ -93,7 +94,7 @@ async function loadGallery() {
             `;
 
             itemDiv.addEventListener("click", () => {
-                openModal(photoId, imageUrls, desc, likesCount, data.comments || []);
+                openModal(photoId, data);
             });
 
             galleryGrid.appendChild(itemDiv);
@@ -105,20 +106,36 @@ async function loadGallery() {
     }
 }
 
-// Modalı açma fonksiyonu (Dikey fotoğraflar için açıklama okunurluğu güncellendi)
-function openModal(id, imageUrls, description, likes, comments) {
+// Modalı açma fonksiyonu
+function openModal(id, data) {
     activePhotoId = id;
-    currentImageUrls = imageUrls;
+    activePhotoData = data;
+    currentImageUrls = data.imageUrls || (data.imageUrl ? [data.imageUrl] : []);
     currentImageIndex = 0; 
     
     modal.style.display = "flex";
     updateModalImage();
     
-    // Açıklamayı dikey/yatay fotoğraflarda okunabilir kılan yapı
-    modalDesc.innerHTML = `<p>${description}</p>`;
-    modalLikes.innerText = likes;
-    renderComments(comments);
+    modalDesc.innerHTML = `<p>${data.description || "Açıklama girilmemiş."}</p>`;
+    modalLikes.innerText = data.likes || 0;
+    
+    // Kullanıcı bu fotoğrafı daha önce beğendiyse kalp butonunun stilini güncelle
+    updateLikeButtonState(data);
+
+    renderComments(data.comments || []);
     document.body.style.overflow = "hidden";
+}
+
+// Beğeni butonunun aktif/pasif görünümünü ayarlayan fonksiyon
+function updateLikeButtonState(data) {
+    const likedUsers = data.likedUsers || [];
+    if (currentUser && likedUsers.includes(currentUser.uid)) {
+        modalLikeBtn.style.color = "#ff3b30"; // Beğenilmişse kırmızı yap
+        modalLikeBtn.style.fontWeight = "bold";
+    } else {
+        modalLikeBtn.style.color = "inherit";
+        modalLikeBtn.style.fontWeight = "normal";
+    }
 }
 
 // Görsel değiştirme (Sağa sola oklar)
@@ -170,15 +187,49 @@ function renderSingleComment(c) {
     commentList.appendChild(p);
 }
 
-// Beğeni Butonu İşlevi
+// Beğeni Butonu İşlevi (Üye Kontrollü & Tek Seferlik)
 modalLikeBtn.onclick = async () => {
-    if (!activePhotoId) return;
+    if (!currentUser) {
+        alert("Fotoğrafları beğenebilmek için önce giriş yapmalısınız!");
+        window.location.href = "giris.html";
+        return;
+    }
+
+    if (!activePhotoId || !activePhotoData) return;
+
+    const photoRef = doc(db, "fotograflar", activePhotoId);
+    const likedUsers = activePhotoData.likedUsers || [];
+    const hasLiked = likedUsers.includes(currentUser.uid);
+
     try {
-        const photoRef = doc(db, "fotograflar", activePhotoId);
-        await updateDoc(photoRef, { likes: increment(1) });
-        modalLikes.innerText = parseInt(modalLikes.innerText) + 1;
+        if (hasLiked) {
+            // Zaten beğenmişse beğeniyi geri al (Toggle özelliği)
+            await updateDoc(photoRef, {
+                likes: increment(-1),
+                likedUsers: arrayRemove(currentUser.uid)
+            });
+            activePhotoData.likes = (activePhotoData.likes || 1) - 1;
+            activePhotoData.likedUsers = likedUsers.filter(uid => uid !== currentUser.uid);
+            
+            modalLikes.innerText = activePhotoData.likes;
+            modalLikeBtn.style.color = "inherit";
+            modalLikeBtn.style.fontWeight = "normal";
+        } else {
+            // İlk kez beğeniyorsa ekle
+            await updateDoc(photoRef, {
+                likes: increment(1),
+                likedUsers: arrayUnion(currentUser.uid)
+            });
+            if (!activePhotoData.likedUsers) activePhotoData.likedUsers = [];
+            activePhotoData.likedUsers.push(currentUser.uid);
+            activePhotoData.likes = (activePhotoData.likes || 0) + 1;
+
+            modalLikes.innerText = activePhotoData.likes;
+            modalLikeBtn.style.color = "#ff3b30";
+            modalLikeBtn.style.fontWeight = "bold";
+        }
     } catch (e) { 
-        console.error("Beğeni hatası:", e); 
+        console.error("Beğeni güncellenirken hata oluştu:", e); 
     }
 };
 
@@ -204,6 +255,9 @@ sendCommentBtn.onclick = async () => {
             comments: arrayUnion(commentObject)
         });
 
+        if (!activePhotoData.comments) activePhotoData.comments = [];
+        activePhotoData.comments.push(commentObject);
+
         renderSingleComment(commentObject);
         commentInputText.value = "";
     } catch (e) {
@@ -216,6 +270,7 @@ window.closeModal = function() {
     modal.style.display = "none";
     document.body.style.overflow = "auto";
     activePhotoId = null;
+    activePhotoData = null;
     loadGallery(); 
 }
 
