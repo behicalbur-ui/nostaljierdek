@@ -30,7 +30,15 @@
         <button id="uploadBtn" class="upload-btn">Yükle ve Arşive Gönder</button>
         <div id="statusMessage"></div>
     </div>
-
+	
+<!-- Mevcut yükleme alanından sonra burayı ekle -->
+    <div class="admin-container" style="margin-top: 30px;">
+        <h2>Arşivdeki Gönderileri Yönet</h2>
+        <div id="adminPostList" style="max-height: 400px; overflow-y: auto;">
+            <p style="text-align: color: #666;">Gönderiler yükleniyor...</p>
+        </div>
+    </div>
+	
     <!-- Modül olarak admin.js dosyasını bağlıyoruz -->
     <script type="module" src="admin.js"></script>
 </body>
