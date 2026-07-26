@@ -38,7 +38,7 @@ let activePhotoId = null;
 let currentImageUrls = []; 
 let currentImageIndex = 0; 
 let currentUser = null;
-let activePhotoData = null; // Aktif fotoğrafın tüm verilerini tutmak için
+let activePhotoData = null;
 
 // Kullanıcı oturum durumunu takip et
 onAuthStateChanged(auth, (user) => {
@@ -123,18 +123,15 @@ function openModal(id, data) {
     modalDesc.innerHTML = `<p>${data.description || "Açıklama girilmemiş."}</p>`;
     modalLikes.innerText = data.likes || 0;
     
-    // Kullanıcı bu fotoğrafı daha önce beğendiyse kalp butonunun stilini güncelle
     updateLikeButtonState(data);
-
     renderComments(data.comments || []);
     document.body.style.overflow = "hidden";
 }
 
-// Beğeni butonunun aktif/pasif görünümünü ayarlayan fonksiyon
 function updateLikeButtonState(data) {
     const likedUsers = data.likedUsers || [];
     if (currentUser && likedUsers.includes(currentUser.uid)) {
-        modalLikeBtn.style.color = "#ff3b30"; // Beğenilmişse kırmızı yap
+        modalLikeBtn.style.color = "#ff3b30";
         modalLikeBtn.style.fontWeight = "bold";
     } else {
         modalLikeBtn.style.color = "inherit";
@@ -142,22 +139,18 @@ function updateLikeButtonState(data) {
     }
 }
 
-// Görsel değiştirme (Sağa sola oklar)
 window.changeSlide = function(direction) {
     currentImageIndex += direction;
-    
     if (currentImageIndex < 0) {
         currentImageIndex = currentImageUrls.length - 1; 
     } else if (currentImageIndex >= currentImageUrls.length) {
         currentImageIndex = 0; 
     }
-    
     updateModalImage();
 }
 
 function updateModalImage() {
     modalImg.src = currentImageUrls[currentImageIndex];
-    
     if (currentImageUrls.length > 1) {
         prevBtn.style.display = "block";
         nextBtn.style.display = "block";
@@ -167,7 +160,6 @@ function updateModalImage() {
     }
 }
 
-// Yorumları ekrana basma
 function renderComments(comments) {
     commentList.innerHTML = "";
     if (!comments || comments.length === 0) {
@@ -191,7 +183,7 @@ function renderSingleComment(c) {
     commentList.appendChild(p);
 }
 
-// Beğeni Butonu İşlevi (Üye Kontrollü & Tek Seferlik)
+// Beğeni Butonu İşlevi
 modalLikeBtn.onclick = async () => {
     if (!currentUser) {
         alert("Fotoğrafları beğenebilmek için önce giriş yapmalısınız!");
@@ -207,7 +199,6 @@ modalLikeBtn.onclick = async () => {
 
     try {
         if (hasLiked) {
-            // Zaten beğenmişse beğeniyi geri al (Toggle özelliği)
             await updateDoc(photoRef, {
                 likes: increment(-1),
                 likedUsers: arrayRemove(currentUser.uid)
@@ -219,7 +210,6 @@ modalLikeBtn.onclick = async () => {
             modalLikeBtn.style.color = "inherit";
             modalLikeBtn.style.fontWeight = "normal";
         } else {
-            // İlk kez beğeniyorsa ekle
             await updateDoc(photoRef, {
                 likes: increment(1),
                 likedUsers: arrayUnion(currentUser.uid)
@@ -265,22 +255,17 @@ sendCommentBtn.onclick = async () => {
         renderSingleComment(commentObject);
         commentInputText.value = "";
         
-        // Emoji panelini gönderim sonrası kapat
         if (emojiPicker) emojiPicker.style.display = "none";
     } catch (e) {
         console.error("Yorum ekleme hatası:", e);
     }
 };
 
-// Emoji Paneli Açma / Kapatma İşlemleri
+// --- EMOJİ PANELİ YÖNETİMİ ---
 if (emojiToggleBtn && emojiPicker) {
     emojiToggleBtn.onclick = (e) => {
         e.stopPropagation();
-        if (emojiPicker.style.display === "flex") {
-            emojiPicker.style.display = "none";
-        } else {
-            emojiPicker.style.display = "flex";
-        }
+        emojiPicker.style.display = (emojiPicker.style.display === "flex") ? "none" : "flex";
     };
 
     // Sayfada başka bir yere tıklandığında paneli kapat
@@ -289,17 +274,22 @@ if (emojiToggleBtn && emojiPicker) {
             emojiPicker.style.display = "none";
         }
     });
-}
 
-// Seçilen Emlojiye Göre Metin Kutusuna Ekleme
-window.addEmoji = function(emoji) {
-    const start = commentInputText.selectionStart;
-    const end = commentInputText.selectionEnd;
-    const text = commentInputText.value;
-    
-    commentInputText.value = text.substring(0, start) + emoji + text.substring(end);
-    commentInputText.focus();
-    commentInputText.setSelectionRange(start + emoji.length, start + emoji.length);
+    // Emoji kutusu içindeki tüm span elemanlarına dinamik tıklama özelliği kazandır
+    emojiPicker.querySelectorAll("span").forEach(span => {
+        span.style.cursor = "pointer";
+        span.onclick = (e) => {
+            e.stopPropagation();
+            const emoji = span.innerText;
+            const start = commentInputText.selectionStart;
+            const end = commentInputText.selectionEnd;
+            const text = commentInputText.value;
+            
+            commentInputText.value = text.substring(0, start) + emoji + text.substring(end);
+            commentInputText.focus();
+            commentInputText.setSelectionRange(start + emoji.length, start + emoji.length);
+        };
+    });
 }
 
 // Modalı Kapatma
