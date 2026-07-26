@@ -30,6 +30,10 @@ const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const authLink = document.getElementById("authLink");
 
+// Emoji Paneli Elemanları
+const emojiToggleBtn = document.getElementById("emojiToggleBtn");
+const emojiPicker = document.getElementById("emojiPicker");
+
 let activePhotoId = null;
 let currentImageUrls = []; 
 let currentImageIndex = 0; 
@@ -260,10 +264,43 @@ sendCommentBtn.onclick = async () => {
 
         renderSingleComment(commentObject);
         commentInputText.value = "";
+        
+        // Emoji panelini gönderim sonrası kapat
+        if (emojiPicker) emojiPicker.style.display = "none";
     } catch (e) {
         console.error("Yorum ekleme hatası:", e);
     }
 };
+
+// Emoji Paneli Açma / Kapatma İşlemleri
+if (emojiToggleBtn && emojiPicker) {
+    emojiToggleBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (emojiPicker.style.display === "flex") {
+            emojiPicker.style.display = "none";
+        } else {
+            emojiPicker.style.display = "flex";
+        }
+    };
+
+    // Sayfada başka bir yere tıklandığında paneli kapat
+    document.addEventListener("click", (e) => {
+        if (!emojiPicker.contains(e.target) && e.target !== emojiToggleBtn) {
+            emojiPicker.style.display = "none";
+        }
+    });
+}
+
+// Seçilen Emlojiye Göre Metin Kutusuna Ekleme
+window.addEmoji = function(emoji) {
+    const start = commentInputText.selectionStart;
+    const end = commentInputText.selectionEnd;
+    const text = commentInputText.value;
+    
+    commentInputText.value = text.substring(0, start) + emoji + text.substring(end);
+    commentInputText.focus();
+    commentInputText.setSelectionRange(start + emoji.length, start + emoji.length);
+}
 
 // Modalı Kapatma
 window.closeModal = function() {
@@ -271,6 +308,7 @@ window.closeModal = function() {
     document.body.style.overflow = "auto";
     activePhotoId = null;
     activePhotoData = null;
+    if (emojiPicker) emojiPicker.style.display = "none";
     loadGallery(); 
 }
 
