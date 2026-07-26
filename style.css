@@ -9,75 +9,7 @@ body, html {
     font-family: 'Roboto', sans-serif;
 }
 
-/* Tam ekran arka plan alanı */
-.hero {
-    position: relative;
-    height: 100vh;
-    width: 100%;
-    background-image: url('https://images.unsplash.com/photo-1505322022379-7c3353ee6291?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-/* Beyaz yazıların okunabilmesi için resmi hafif karartan katman */
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-}
-
-.content {
-    position: relative;
-    z-index: 1;
-    color: #fdfdfd;
-    padding: 0 20px;
-}
-
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 4rem;
-    margin-bottom: 15px;
-    letter-spacing: 2px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-}
-
-p {
-    font-size: 1.2rem;
-    font-weight: 300;
-    margin-bottom: 30px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: 1.6;
-}
-
-/* Arşivi Keşfet Butonu */
-.btn {
-    display: inline-block;
-    padding: 12px 30px;
-    font-size: 1.1rem;
-    color: #fff;
-    text-decoration: none;
-    border: 2px solid #fff;
-    border-radius: 4px;
-    transition: background 0.3s ease, color 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.btn:hover {
-    background: #fff;
-    color: #333;
-}
-
-/* --- PROFESYONEL ÜST MENÜ (NAVBAR) VE HEADER --- */
+/* --- LOGO VE ÜST MENÜ (NAVBAR) DÜZENLEMESİ --- */
 .arsiv-header {
     background: #ffffff;
     padding: 15px 30px;
@@ -91,14 +23,20 @@ p {
     z-index: 1000;
 }
 
-.arsiv-header img {
-    max-height: 80px;
-    width: auto;
+/* Logonun devleşmesini engelleyen kesin sınırlandırma */
+.arsiv-header img, 
+header img, 
+.logo {
+    max-height: 80px !important;
+    max-width: 250px !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain;
     transition: transform 0.3s ease;
 }
 
 .arsiv-header img:hover {
-    transform: scale(1.02);
+    transform: scale(1.03);
 }
 
 .nav-links {
@@ -124,18 +62,77 @@ p {
     color: #ffffff;
 }
 
+/* --- GENEL SAYFA TASARIMI --- */
 .arsiv-body {
     background-color: #fafafa;
 }
 
-.back-link {
-    display: inline-block;
-    margin-top: 10px;
-    color: #0095f6;
-    text-decoration: none;
+.hero {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    background-image: url('https://images.unsplash.com/photo-1505322022379-7c3353ee6291?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
-/* --- İÇERİK SAYFALARI İÇİN ŞIK KUTU TASARIMI --- */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+    color: #fdfdfd;
+    padding: 0 20px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+p {
+    font-size: 1.1rem;
+    font-weight: 300;
+    margin-bottom: 30px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #fff;
+    border-radius: 4px;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover {
+    background: #fff;
+    color: #333;
+}
+
+/* --- İÇERİK KUTULARI --- */
 .content-container {
     max-width: 700px;
     margin: 40px auto;
@@ -159,18 +156,13 @@ p {
     padding-bottom: 10px;
 }
 
-.card-box p {
-    margin-bottom: 15px;
-    color: #555;
-}
-
-/* --- INSTAGRAM IZGARA (GRID) YAPISI --- */
+/* --- GALLERY GRID (FOTOĞRAF IZGARASI) --- */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 10px;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 0 10px;
 }
 
@@ -179,6 +171,7 @@ p {
     cursor: pointer;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+    border-radius: 6px;
 }
 
 .gallery-item img {
@@ -204,7 +197,7 @@ p {
     align-items: center;
     gap: 20px;
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -214,29 +207,28 @@ p {
     opacity: 1;
 }
 
-/* Çoklu Fotoğraf İkonu (Kapak görseli üzerine) */
 .album-badge {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.6);
+    top: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 4px 8px;
+    padding: 3px 7px;
     border-radius: 4px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     pointer-events: none;
 }
 
-/* --- AÇILIR PENCERE (MODAL) TASARIMI --- */
+/* --- AÇILIR PENCERE (MODAL) DÜZENLEMESİ --- */
 .modal {
     display: none;
     position: fixed;
-    z-index: 10;
+    z-index: 2000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.8);
+    background-color: rgba(0,0,0,0.85);
     align-items: center;
     justify-content: center;
 }
@@ -244,17 +236,16 @@ p {
 .modal-content {
     display: flex;
     width: 90%;
-    max-width: 1000px;
-    height: 85vh;
+    max-width: 950px;
+    height: 80vh;
     background: #fff;
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    animation: modalFadeIn 0.3s;
 }
 
 .modal-image {
-    flex: 2;
+    flex: 1.8;
     background: #000;
     display: flex;
     align-items: center;
@@ -270,47 +261,40 @@ p {
 }
 
 .modal-details {
-    flex: 1;
+    flex: 1.2;
     display: flex;
     flex-direction: column;
-    background: #fff;
+    background: #ffffff;
     padding: 20px;
-    position: relative;
+    height: 100%;
+    overflow: hidden;
 }
 
-/* Dikey/Yatay Fotoğraflar İçin Okunabilir Açıklama Bandı */
+/* Açıklama Alanı (Sağ Panelin En Üstüne Temiz Şekilde Konumlandırıldı) */
 .modal-description {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: #fff;
-    padding: 40px 20px 15px 20px;
-    font-size: 1.1rem;
-    font-family: 'Playfair Display', serif;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    pointer-events: none;
-    margin: 0;
-    border-top: none;
-}
-
-.modal-description h3 {
-    margin: 0 0 5px 0;
-    font-size: 1.4rem;
-    color: #fff;
+    position: static;
+    background: none;
+    color: #333333;
+    padding: 0 0 12px 0;
+    font-size: 0.95rem;
+    border-bottom: 1px solid #eeeeee;
+    margin-bottom: 10px;
+    text-shadow: none;
+    pointer-events: auto;
 }
 
 .modal-description p {
     margin: 0;
-    font-size: 1rem;
-    color: #eee;
+    font-size: 0.95rem;
+    color: #333333;
     line-height: 1.4;
+    font-weight: 400;
 }
 
 .modal-actions {
-    padding: 15px 0;
-    border-top: 1px solid #eee;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
 }
 
 .modal-actions button {
@@ -318,22 +302,28 @@ p {
     border: none;
     cursor: pointer;
     font-size: 1.1rem;
-    margin-bottom: 0;
 }
 
 .modal-comments {
     flex: 1;
-    overflow-y: auto;
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .comment-list {
-    flex-grow: 1;
+    flex: 1;
     overflow-y: auto;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     font-size: 0.9rem;
+    padding-right: 5px;
+}
+
+.comment-list p {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: #333;
+    line-height: 1.3;
 }
 
 .comment-input {
@@ -346,7 +336,8 @@ p {
     flex-grow: 1;
     border: none;
     outline: none;
-    padding: 5px;
+    padding: 8px;
+    font-size: 0.9rem;
 }
 
 .comment-input button {
@@ -355,18 +346,20 @@ p {
     color: #0095f6;
     font-weight: bold;
     cursor: pointer;
+    padding: 0 8px;
 }
 
 .close-btn {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: 15px;
+    right: 25px;
     color: #fff;
-    font-size: 40px;
+    font-size: 35px;
     cursor: pointer;
+    z-index: 10;
 }
 
-/* Modal İçinde Sağa/Sola Kaydırma Okları */
+/* Modal Ok Butonları */
 .slider-btn {
     position: absolute;
     top: 50%;
@@ -374,8 +367,8 @@ p {
     background: rgba(0, 0, 0, 0.5);
     color: white;
     border: none;
-    font-size: 1.5rem;
-    padding: 10px 15px;
+    font-size: 1.3rem;
+    padding: 8px 12px;
     cursor: pointer;
     border-radius: 50%;
     z-index: 5;
@@ -386,25 +379,28 @@ p {
     background: rgba(0, 0, 0, 0.8);
 }
 
-.prev-btn { left: 15px; }
-.next-btn { right: 15px; }
+.prev-btn { left: 10px; }
+.next-btn { right: 10px; }
 
-/* Mobil Uyumluluk */
+/* MOBİL UYUM */
 @media (max-width: 768px) {
-    h1 {
-        font-size: 2.5rem;
+    .arsiv-header img {
+        max-height: 60px !important;
     }
-    p {
-        font-size: 1rem;
-    }
+    
     .modal-content {
         flex-direction: column;
+        height: 90vh;
         overflow-y: auto;
     }
-    .modal-image img {
-        max-height: 50vh;
+
+    .modal-image {
+        min-height: 280px;
+        flex: none;
     }
-    .arsiv-header img {
-        max-height: 75px;
+
+    .modal-details {
+        flex: none;
+        overflow: visible;
     }
 }
