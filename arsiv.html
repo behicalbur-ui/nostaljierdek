@@ -20,32 +20,31 @@
     </main>
 
     <!-- Tıklanınca Açılan Pencere (Modal) -->
-    <div id="photoModal" class="modal">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <div class="modal-content">
-            <div class="modal-image">
-                <img id="modalImg" src="" alt="Büyük Fotoğraf">
+<div id="photoModal" class="modal">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <div class="modal-content">
+        <div class="modal-image">
+            <!-- Sağa Sola Kaydırma Okları -->
+            <button class="slider-btn prev-btn" id="prevBtn" onclick="changeSlide(-1)">&#10094;</button>
+            <img id="modalImg" src="" alt="Büyük Fotoğraf">
+            <button class="slider-btn next-btn" id="nextBtn" onclick="changeSlide(1)">&#10095;</button>
+        </div>
+        <div class="modal-details">
+            <div class="modal-description" id="modalDesc"></div>
+            <div class="modal-actions">
+                <button class="like-btn" id="modalLikeBtn">❤️ <span id="modalLikes">0</span> Beğen</button>
             </div>
-            <div class="modal-details">
-                <div class="modal-description" id="modalDesc">
-                    <!-- Açıklama buraya gelecek -->
-                </div>
-                <div class="modal-actions">
-                    <button class="like-btn" id="modalLikeBtn">❤️ <span id="modalLikes">0</span> Beğen</button>
-                </div>
-                <div class="modal-comments">
-                    <h4>Yorumlar</h4>
-                    <div class="comment-list" id="commentList">
-                        <!-- Yorumlar buraya eklenecek -->
-                    </div>
-                    <div class="comment-input">
-                        <input type="text" id="commentInputText" placeholder="Bir yorum ekle...">
-                        <button id="sendCommentBtn">Paylaş</button>
-                    </div>
+            <div class="modal-comments">
+                <h4>Yorumlar</h4>
+                <div class="comment-list" id="commentList"></div>
+                <div class="comment-input">
+                    <input type="text" id="commentInputText" placeholder="Bir yorum ekle...">
+                    <button id="sendCommentBtn">Paylaş</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
     <!-- Dinamik arşiv ve modal işlemlerini yönetecek JavaScript (Modül) -->
     <script type="module" src="arsiv.js"></script>
