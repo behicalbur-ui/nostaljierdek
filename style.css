@@ -117,11 +117,12 @@ p {
 /* Instagram Izgara (Grid) Yapısı */
 .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 15px;
+    /* Mobilde de en az 2 sütun yan yana durması için min değerini küçülttük (örn: 120px) */
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px; /* Mobilde boşlukların çok büyük durmaması için biraz daralttık */
     max-width: 1000px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 10px;
 }
 
 .gallery-item {
