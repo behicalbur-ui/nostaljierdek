@@ -14,7 +14,6 @@ body, html {
     position: relative;
     height: 100vh;
     width: 100%;
-    /* Buradaki URL'yi kendi görselinle değiştireceksin */
     background-image: url('https://images.unsplash.com/photo-1505322022379-7c3353ee6291?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
     background-size: cover;
     background-position: center;
@@ -78,303 +77,7 @@ p {
     color: #333;
 }
 
-/* Telefon ekranlarında yazıların düzgün görünmesi için */
-@media (max-width: 768px) {
-    h1 {
-        font-size: 2.5rem;
-    }
-    p {
-        font-size: 1rem;
-    }
-}
-
-/* --- ARŞİV SAYFASI TASARIMI --- */
-.arsiv-body {
-    background-color: #fafafa;
-}
-
-.arsiv-header {
-    text-align: center;
-    padding: 40px 20px;
-    background: #fff;
-    border-bottom: 1px solid #dbdbdb;
-    margin-bottom: 20px;
-}
-
-.arsiv-header h1 {
-    font-size: 2.5rem;
-    color: #333;
-    text-shadow: none;
-}
-
-.back-link {
-    display: inline-block;
-    margin-top: 10px;
-    color: #0095f6;
-    text-decoration: none;
-}
-
-/* Instagram Izgara (Grid) Yapısı */
-.gallery-grid {
-    display: grid;
-    /* Mobilde de en az 2 sütun yan yana durması için min değerini küçülttük (örn: 120px) */
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px; /* Mobilde boşlukların çok büyük durmaması için biraz daralttık */
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 10px;
-}
-
-.gallery-item {
-    position: relative;
-    cursor: pointer;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.gallery-item:hover img {
-    transform: scale(1.05);
-}
-
-.item-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    color: #fff;
-    font-size: 1.2rem;
-    font-weight: bold;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.gallery-item:hover .item-overlay {
-    opacity: 1;
-}
-
-/* --- AÇILIR PENCERE (MODAL) TASARIMI --- */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8);
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-content {
-    display: flex;
-    width: 90%;
-    max-width: 1000px;
-    height: 85vh; /* Yüksekliği biraz artırdık */
-    background: #fff;
-    border-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    animation: modalFadeIn 0.3s;
-}
-
-.modal-image {
-    flex: 2;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.modal-image img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain; /* Fotoğrafın en-boy oranını korur */
-}
-
-.modal-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background: #fff;
-    padding: 20px;
-    position: relative;
-}
-
-.modal-description {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    /* Fotoğrafın altından başlayıp yukarı doğru koyulaşan bir arka plan ekliyoruz */
-    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-    color: #fff; /* Yazı rengini beyaz yapıyoruz */
-    padding: 40px 20px 15px 20px;
-    font-size: 1.1rem;
-    font-family: 'Playfair Display', serif; /* Sitenin retro fontu */
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Yazıya gölge ekleyerek okunurluğu garantiliyoruz */
-    pointer-events: none; /* Yazının tıklanmasını engeller, fotoğrafa tıklamayı kolaylaştırır */
-    margin: 0; /* Eski margin değerini sıfırlıyoruz */
-    border-top: none; /* Eski border'ı kaldırıyoruz */
-}
-.modal-description h3 {
-    margin: 0 0 5px 0;
-    font-size: 1.4rem;
-    color: #fff;
-    
-.modal-description p {
-    margin: 0;
-    font-size: 1rem;
-    color: #eee;
-    line-height: 1.4;
-}
-
-.modal-actions button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.1rem;
-    margin-bottom: 20px;
-}
-
-.modal-comments {
-    flex: 1;
-    overflow-y: auto;
-    margin-top: 10px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-}
-.modal-actions {
-    padding: 15px 0;
-    border-top: 1px solid #eee;
-    
-.comment-list {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-}
-
-.comment-input {
-    display: flex;
-    border-top: 1px solid #dbdbdb;
-    padding-top: 10px;
-}
-
-.comment-input input {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    padding: 5px;
-}
-
-.comment-input button {
-    background: none;
-    border: none;
-    color: #0095f6;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 30px;
-    color: #fff;
-    font-size: 40px;
-    cursor: pointer;
-}
-
-/* Mobil Uyumluluk */
-@media (max-width: 768px) {
-    .modal-content {
-        flex-direction: column;
-        overflow-y: auto;
-    }
-    .modal-image img {
-        max-height: 50vh;
-    }
-}
-/* Instagram Çoklu Fotoğraf İkonu (Kapak görseli üzerine) */
-.album-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    pointer-events: none;
-}
-
-/* Modal İçinde Sağa/Sola Kaydırma Okları */
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
-    color: white;
-    border: none;
-    font-size: 1.5rem;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 50%;
-    z-index: 5;
-    transition: background 0.3s;
-}
-
-.slider-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
-}
-
-.prev-btn { left: 15px; }
-.next-btn { right: 15px; }
-
-.modal-image {
-    position: relative; /* Okların doğru konumlanması için */
-}
-/* Instagram Izgara (Grid) Yapısı - Telefonda ve PC'de Eşit Görünüm */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 10px;
-}
-
-/* Logo ve Header Düzenlemesi */
-.arsiv-header img {
-    transition: transform 0.3s ease;
-}
-
-.arsiv-header img:hover {
-    transform: scale(1.03);
-}
-
-/* Mobil Uyumlu Logo Boyutu */
-@media (max-width: 768px) {
-    .arsiv-header img {
-        max-height: 75px;
-    }
-}
-/* --- Profesyonel Site Görünümü ve Üst Menü (Navbar) --- */
+/* --- PROFESYONEL ÜST MENÜ (NAVBAR) VE HEADER --- */
 .arsiv-header {
     background: #ffffff;
     padding: 15px 30px;
@@ -421,7 +124,18 @@ p {
     color: #ffffff;
 }
 
-/* İçerik Sayfaları için Şık Kutu Tasarımı */
+.arsiv-body {
+    background-color: #fafafa;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 10px;
+    color: #0095f6;
+    text-decoration: none;
+}
+
+/* --- İÇERİK SAYFALARI İÇİN ŞIK KUTU TASARIMI --- */
 .content-container {
     max-width: 700px;
     margin: 40px auto;
@@ -448,4 +162,249 @@ p {
 .card-box p {
     margin-bottom: 15px;
     color: #555;
+}
+
+/* --- INSTAGRAM IZGARA (GRID) YAPISI --- */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.gallery-item {
+    position: relative;
+    cursor: pointer;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+.item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .item-overlay {
+    opacity: 1;
+}
+
+/* Çoklu Fotoğraf İkonu (Kapak görseli üzerine) */
+.album-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
+/* --- AÇILIR PENCERE (MODAL) TASARIMI --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    height: 85vh;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    animation: modalFadeIn 0.3s;
+}
+
+.modal-image {
+    flex: 2;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-image img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.modal-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    padding: 20px;
+    position: relative;
+}
+
+/* Dikey/Yatay Fotoğraflar İçin Okunabilir Açıklama Bandı */
+.modal-description {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: #fff;
+    padding: 40px 20px 15px 20px;
+    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    pointer-events: none;
+    margin: 0;
+    border-top: none;
+}
+
+.modal-description h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    color: #fff;
+}
+
+.modal-description p {
+    margin: 0;
+    font-size: 1rem;
+    color: #eee;
+    line-height: 1.4;
+}
+
+.modal-actions {
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+}
+
+.modal-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    margin-bottom: 0;
+}
+
+.modal-comments {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.comment-list {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.comment-input {
+    display: flex;
+    border-top: 1px solid #dbdbdb;
+    padding-top: 10px;
+}
+
+.comment-input input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    padding: 5px;
+}
+
+.comment-input button {
+    background: none;
+    border: none;
+    color: #0095f6;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #fff;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+/* Modal İçinde Sağa/Sola Kaydırma Okları */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 5;
+    transition: background 0.3s;
+}
+
+.slider-btn:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.prev-btn { left: 15px; }
+.next-btn { right: 15px; }
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+    p {
+        font-size: 1rem;
+    }
+    .modal-content {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+    .modal-image img {
+        max-height: 50vh;
+    }
+    .arsiv-header img {
+        max-height: 75px;
+    }
 }
