@@ -3,58 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arşiv - Nostalji Erdek</title>
+    <title>Arşiv - Erdek Nostalji</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body class="arsiv-body">
     
-<header class="arsiv-header" style="text-align: center; padding: 20px; background: #fff; border-bottom: 1px solid #eaeaea;">
-    <!-- Logo -->
-    <a href="index.html">
-        <img src="logo.png" alt="Erdek Nostalji Logo" style="max-height: 90px; width: auto; display: block; margin: 0 auto 10px auto;">
-    </a>
-    
-    <!-- Navigasyon Linkleri -->
-    <div style="margin-top: 10px;">
-        <a href="index.html" class="back-link" style="margin-right: 15px; text-decoration: none; color: #0095f6;">← Anasayfa</a>
-        <a href="giris.html" class="back-link" id="authLink" style="text-decoration: none; color: #0095f6;">Giriş Yap / Üye Ol</a>
-    </div>
-</header>
+    <!-- Profesyonel Üst Menü ve Logo -->
+    <header class="arsiv-header">
+        <a href="index.html">
+            <img src="logo.png" alt="Erdek Nostalji Logo">
+        </a>
+        <nav class="nav-links">
+            <a href="arsiv.html" class="active">Arşiv</a>
+            <a href="hakkimizda.html">Hakkımızda</a>
+            <a href="iletisim.html">İletişim</a>
+            <a href="giris.html" id="authLink">Giriş Yap / Üye Ol</a>
+        </nav>
+    </header>
 
-    <!-- Instagram Tarzı Fotoğraf Izgarası (Dinamiğe bağlandı) -->
+    <!-- Instagram Tarzı Fotoğraf Izgarası -->
     <main class="gallery-grid" id="galleryGrid">
         <p style="text-align: center; grid-column: 1 / -1; padding: 40px; color: #666;">Arşiv yükleniyor...</p>
     </main>
 
     <!-- Tıklanınca Açılan Pencere (Modal) -->
-<div id="photoModal" class="modal">
-    <span class="close-btn" onclick="closeModal()">&times;</span>
-    <div class="modal-content">
-        <div class="modal-image">
-            <!-- Sağa Sola Kaydırma Okları -->
-            <button class="slider-btn prev-btn" id="prevBtn" onclick="changeSlide(-1)">&#10094;</button>
-            <img id="modalImg" src="" alt="Büyük Fotoğraf">
-            <button class="slider-btn next-btn" id="nextBtn" onclick="changeSlide(1)">&#10095;</button>
-        </div>
-        <div class="modal-details">
-            <div class="modal-description" id="modalDesc"></div>
-            <div class="modal-actions">
-                <button class="like-btn" id="modalLikeBtn">❤️ <span id="modalLikes">0</span> Beğen</button>
+    <div id="photoModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <div class="modal-image">
+                <button class="slider-btn prev-btn" id="prevBtn" onclick="changeSlide(-1)">&#10094;</button>
+                <img id="modalImg" src="" alt="Büyük Fotoğraf">
+                <button class="slider-btn next-btn" id="nextBtn" onclick="changeSlide(1)">&#10095;</button>
             </div>
-            <div class="modal-comments">
-                <h4>Yorumlar</h4>
-                <div class="comment-list" id="commentList"></div>
-                <div class="comment-input">
-                    <input type="text" id="commentInputText" placeholder="Bir yorum ekle...">
-                    <button id="sendCommentBtn">Paylaş</button>
+            <div class="modal-details">
+                <div class="modal-description" id="modalDesc">
+                    <!-- Açıklama buraya gelecek -->
+                </div>
+                <div class="modal-actions">
+                    <button class="like-btn" id="modalLikeBtn">❤️ <span id="modalLikes">0</span> Beğen</button>
+                </div>
+                <div class="modal-comments">
+                    <h4>Yorumlar</h4>
+                    <div class="comment-list" id="commentList">
+                        <!-- Yorumlar buraya eklenecek -->
+                    </div>
+                    <div class="comment-input">
+                        <input type="text" id="commentInputText" placeholder="Bir yorum ekle...">
+                        <button id="sendCommentBtn">Paylaş</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-    <!-- Dinamik arşiv ve modal işlemlerini yönetecek JavaScript (Modül) -->
+    <!-- Dinamik arşiv ve oturum işlemlerini yönetecek JavaScript -->
     <script type="module" src="arsiv.js"></script>
 </body>
 </html>
