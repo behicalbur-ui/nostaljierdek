@@ -180,44 +180,68 @@ p {
 }
 
 .modal-content {
-    background-color: #fff;
     display: flex;
-    flex-direction: row;
-    max-width: 900px;
     width: 90%;
-    max-height: 90vh;
-    border-radius: 8px;
+    max-width: 1000px;
+    height: 85vh; /* Yüksekliği biraz artırdık */
+    background: #fff;
+    border-radius: 12px;
     overflow: hidden;
+    position: relative;
+    animation: modalFadeIn 0.3s;
 }
 
 .modal-image {
-    flex: 6;
+    flex: 2;
     background: #000;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
 }
 
 .modal-image img {
-    width: 100%;
-    max-height: 90vh;
-    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Fotoğrafın en-boy oranını korur */
 }
 
 .modal-details {
-    flex: 4;
+    flex: 1;
     display: flex;
     flex-direction: column;
+    background: #fff;
     padding: 20px;
-    border-left: 1px solid #dbdbdb;
+    position: relative;
 }
 
 .modal-description {
-    margin-bottom: 20px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    border-bottom: 1px solid #efefef;
-    padding-bottom: 15px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Fotoğrafın altından başlayıp yukarı doğru koyulaşan bir arka plan ekliyoruz */
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    color: #fff; /* Yazı rengini beyaz yapıyoruz */
+    padding: 40px 20px 15px 20px;
+    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif; /* Sitenin retro fontu */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Yazıya gölge ekleyerek okunurluğu garantiliyoruz */
+    pointer-events: none; /* Yazının tıklanmasını engeller, fotoğrafa tıklamayı kolaylaştırır */
+    margin: 0; /* Eski margin değerini sıfırlıyoruz */
+    border-top: none; /* Eski border'ı kaldırıyoruz */
+}
+.modal-description h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.4rem;
+    color: #fff;
+    
+.modal-description p {
+    margin: 0;
+    font-size: 1rem;
+    color: #eee;
+    line-height: 1.4;
 }
 
 .modal-actions button {
@@ -229,11 +253,16 @@ p {
 }
 
 .modal-comments {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
 }
-
+.modal-actions {
+    padding: 15px 0;
+    border-top: 1px solid #eee;
+    
 .comment-list {
     flex-grow: 1;
     overflow-y: auto;
