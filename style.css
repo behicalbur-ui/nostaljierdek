@@ -320,3 +320,28 @@ p {
 .modal-image {
     position: relative; /* Okların doğru konumlanması için */
 }
+/* Instagram Izgara (Grid) Yapısı - Telefonda ve PC'de Eşit Görünüm */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/* Logo ve Header Düzenlemesi */
+.arsiv-header img {
+    transition: transform 0.3s ease;
+}
+
+.arsiv-header img:hover {
+    transform: scale(1.03);
+}
+
+/* Mobil Uyumlu Logo Boyutu */
+@media (max-width: 768px) {
+    .arsiv-header img {
+        max-height: 75px;
+    }
+}
