@@ -26,43 +26,6 @@
             <p>Geçmişin tozlu raflarından ve değerli hemşehrilerimizin albümlerinden derlenen bu fotoğraflar, Erdek’in ortak hafızasını oluşturmaktadır. Siz de elinizdeki eski fotoğraflarla bu arşivi büyütebilir, geçmişe birlikte ışık tutabiliriz.</p>
         </div>
     </main>
-    <!-- Oturum Durumunu Tüm Sayfalarda Takip Eden Script -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = {
-  apiKey: "AIzaSyBAiG08P8M_a6yaAAhJbYMCUqVPmn7KVE4",
-  authDomain: "nostaljierdek-60f5b.firebaseapp.com",
-  projectId: "nostaljierdek-60f5b",
-  storageBucket: "nostaljierdek-60f5b.firebasestorage.app",
-  messagingSenderId: "671939663155",
-  appId: "1:671939663155:web:a01245b5a353b1f35e5a46"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const authLink = document.getElementById("authLink");
-
-        onAuthStateChanged(auth, (user) => {
-            if (user && authLink) {
-                authLink.innerText = `${user.email.split('@')[0]} (Çıkış Yap)`;
-                authLink.href = "#";
-                authLink.onclick = (e) => {
-                    e.preventDefault();
-                    signOut(auth).then(() => { 
-                        alert("Çıkış yapıldı"); 
-                        location.reload(); 
-                    });
-                };
-            } else if (authLink) {
-                authLink.innerText = "Giriş Yap / Üye Ol";
-                authLink.href = "giris.html";
-                authLink.onclick = null;
-            }
-        });
-    </script>
-</body>
-</html>
+<script type="module" src="auth-check.js"></script>
 </body>
 </html>
