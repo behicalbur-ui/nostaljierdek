@@ -3,43 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yönetim Paneli - Nostalji Erdek</title>
+    <title>Yönetim Paneli - Erdek Nostalji</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .admin-container { max-width: 600px; margin: 50px auto; padding: 30px; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .admin-container h2 { margin-bottom: 20px; color: #333; text-align: center; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #555; }
-        .form-group input[type="file"], .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit; }
-        .upload-btn { background: #0095f6; color: white; border: none; padding: 12px 20px; font-size: 1.1rem; cursor: pointer; border-radius: 4px; width: 100%; font-weight: bold; transition: background 0.3s; }
-        .upload-btn:hover { background: #0077c5; }
-        #statusMessage { margin-top: 15px; text-align: center; font-weight: bold; color: green; }
+        .admin-wrapper { max-width: 800px; margin: 40px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .hidden-admin { display: none; } /* Yetki kontrol edilene kadar paneli gizle */
     </style>
 </head>
 <body class="arsiv-body">
-    <div class="admin-container">
-        <h2>Arşive Yeni Fotoğraf Ekle</h2>
-        <div class="form-group">
- 	   <label>Fotoğraflar (Birden fazla seçebilirsin):</label>
- 	   <input type="file" id="imageFiles" accept="image/*" multiple>
-	</div>
-        <div class="form-group">
-            <label>Açıklama / Tarihi Bilgi:</label>
-            <textarea id="imageDesc" rows="5" placeholder="Bu karenin hikayesini yazın..."></textarea>
-        </div>
-        <button id="uploadBtn" class="upload-btn">Yükle ve Arşive Gönder</button>
-        <div id="statusMessage"></div>
+
+    <!-- Yetkisiz Giriş Uyarısı / Yükleniyor Alanı -->
+    <div id="authCheckScreen" style="text-align: center; margin-top: 100px;">
+        <h2>Yetki kontrol ediliyor, lütfen bekleyin...</h2>
     </div>
-	
-<!-- Mevcut yükleme alanından sonra burayı ekle -->
-    <div class="admin-container" style="margin-top: 30px;">
+
+    <!-- Asıl Yönetim Paneli (Başlangıçta Gizli) -->
+    <div class="admin-wrapper hidden-admin" id="adminPanelContent">
+        <h1>Nostalji Erdek - Yönetim Paneli</h1>
+        <p><a href="arsiv.html">← Arşife Geri Dön</a></p>
+        
+        <div class="form-group" style="margin-top: 20px;">
+            <label>Fotoğraflar (Birden fazla seçebilirsin):</label>
+            <input type="file" id="imageFiles" accept="image/*" multiple>
+        </div>
+
+        <div class="form-group" style="margin-top: 15px;">
+            <label>Açıklama / Tarih Bilgisi:</label>
+            <textarea id="imageDesc" placeholder="Fotoğraf açıklamasını girin..." rows="3" style="width:100%; padding:10px;"></textarea>
+        </div>
+
+        <button id="uploadBtn" style="background:#003366; color:white; border:none; padding:12px 20px; border-radius:4px; cursor:pointer; margin-top:10px; width:100%;">Yükle ve Arşive Gönder</button>
+        <p id="statusMessage" style="margin-top: 10px; font-weight: bold; color: green;"></p>
+
+        <hr style="margin: 40px 0;">
+
         <h2>Arşivdeki Gönderileri Yönet</h2>
-        <div id="adminPostList" style="max-height: 400px; overflow-y: auto;">
-            <p style="text-align: color: #666;">Gönderiler yükleniyor...</p>
+        <div id="adminPostList" style="max-height: 400px; overflow-y: auto; border: 1px solid #eee; padding: 10px; border-radius: 4px;">
+            <p>Gönderiler yükleniyor...</p>
         </div>
     </div>
-	
-    <!-- Modül olarak admin.js dosyasını bağlıyoruz -->
+
+    <!-- Admin Kontrollerini Yürüten Script -->
     <script type="module" src="admin.js"></script>
 </body>
 </html>
